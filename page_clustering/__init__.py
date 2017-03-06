@@ -1,1 +1,1 @@
-from clustering import (OnlineKMeans, kmeans_from_samples)
+from .clustering import (OnlineKMeans, kmeans_from_samples)

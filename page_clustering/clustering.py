@@ -2,7 +2,7 @@ import scrapely.htmlpage as hp
 from sklearn.cluster import MiniBatchKMeans
 import numpy as np
 
-from features import TagFrequency
+from .features import TagFrequency
 
 
 def reshape_cols(X, n):
@@ -151,11 +151,11 @@ def kmeans_from_samples(samples):
             url = sample.get('url')
             body = sample.get('original_body', sample.get('annotated_body'))
         return hp.HtmlPage(url=url, body=body)
-    pages = map(build_htmlpage, samples)
+    pages = list(map(build_htmlpage, samples))
     n_clusters = len(pages)
     vectorizer = TagFrequency()
-    centers = map(vectorizer, pages)
-    X = np.zeros((len(centers), vectorizer.dimension))
+    centers = list(map(vectorizer, pages))
+    X = np.zeros((n_clusters, vectorizer.dimension))
     for i, c in enumerate(centers):
         X[i, :len(c)] = c
     return OnlineKMeans(

@@ -4,6 +4,7 @@ import scrapely.htmlpage as hp
 
 import page_clustering
 
+import six
 
 JOBS = [
     'Jobs - 1 - Stack Overflow.html',
@@ -107,7 +108,10 @@ def load_page(name, path='stackoverflow'):
     datadir = os.environ.get('DATAPATH', '.')
     with open(os.path.join(datadir, path, name), 'r') as f:
         body = f.read()
-    return hp.HtmlPage(url=name, body=body.decode('utf-8'))
+    if six.PY2:
+        return hp.HtmlPage(url=name, body=body.decode('utf-8'))
+    else:
+        return hp.HtmlPage(url=name, body=body)
 
 
 def test_clustering():
